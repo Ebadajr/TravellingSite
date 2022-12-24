@@ -25,7 +25,7 @@ app.get('/', function (req, res) {
 	res.render('login')
 });
 
-app.listen(3000)
+//app.listen(3000)
 
 function getHome(res) {
 	res.render('home');
