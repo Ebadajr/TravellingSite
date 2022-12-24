@@ -8,7 +8,7 @@ var un = null;
 var pw = null;
 var want = [];
 
-const PORT = process.env.PORT || 3030;
+//const PORT = process.env.PORT || 3030;
 //view engine setup
 
 app.set('views', path.join(__dirname, 'views'));
@@ -25,7 +25,7 @@ app.get('/', function (req, res) {
 	res.render('login')
 });
 
-//app.listen(3000)
+app.listen(3000)
 
 function getHome(res) {
 	res.render('home');
@@ -34,10 +34,11 @@ function getHome(res) {
 app.post('/', function (req, res) {
 	var x = req.body.username;
 	var y = req.body.password;
-	if (x.length === 0) {
-		alert("please enter a username");
-	} else if (y.length === 0) {
-		alert("please enter your password");
+	if (x.length == 0) {
+		console.log(" ")
+	}
+	if (y.length === 0) {
+		console.log(" ")
 	}
 
 	else {
@@ -56,10 +57,7 @@ app.post('/', function (req, res) {
 					getHome(res); // print out what it sends back
 
 				}
-				else // if it does not 
-				{
-					alert("Please create an account");
-				}
+
 			});
 
 
@@ -277,7 +275,7 @@ app.post('/register', function (req, res) {
 		{
 			if (docs.length > 0) //if exists
 			{
-				alert("Account already exists"); // print out what it sends back
+				console.log("no")
 			}
 			else // if it does not 
 			{
@@ -285,7 +283,7 @@ app.post('/register', function (req, res) {
 				un = u;
 				pw = c;
 				want = [];
-				alert("Account created succesfully!");
+
 				res.render('login');
 			}
 		});
@@ -302,8 +300,8 @@ MongoClient.connect("mongodb://127.0.0.1:27017", function (err, client) {
 });
 
 
-app.listen(PORT, () => {
-	console.log(`server started on port ${PORT}`);
-});
+//app.listen(PORT, () => {
+//	console.log(`server started on port ${PORT}`);
+//});
 
 
