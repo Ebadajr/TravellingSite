@@ -8,11 +8,22 @@ var un = null;
 var pw = null;
 var want = [];
 
-//const PORT = process.env.PORT || 3030;
+var session = require('express-session');
+var mongoDBSession = require('connect-mongodb-session')(session);
+const store = new mongoDBSession({
+	uri: 'mongodb://127.0.0.1:27017/myDB',
+	collection: 'Sessions'
+});
+
+const PORT = process.env.PORT || 3030;
 //view engine setup
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+
+
+
 
 
 app.use(express.json());
@@ -20,12 +31,18 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({ secret: 'secret', saveUninitialized: false, resave: false, store: store, cookie: { maxAge: 1000 * 60 * 60 } }));
+
 
 app.get('/', function (req, res) {
 	res.render('login')
 });
 
-app.listen(3000)
+//app.listen(3000)
+function getlog(res) {
+	res.render('login');
+
+}
 
 function getHome(res) {
 	res.render('home');
@@ -34,11 +51,10 @@ function getHome(res) {
 app.post('/', function (req, res) {
 	var x = req.body.username;
 	var y = req.body.password;
-	if (x.length == 0) {
-		console.log(" ")
-	}
-	if (y.length === 0) {
-		console.log(" ")
+	if (x.length === 0) {
+		console.log(' ');
+	} else if (y.length === 0) {
+		console.log(' ');
 	}
 
 	else {
@@ -46,18 +62,19 @@ app.post('/', function (req, res) {
 			if (err) throw err;
 			var db = client.db('myDB');
 			var firstColl = db.collection('myCollection');
-			firstColl.find({ username: x, password: y }).toArray(function (err, docs) //find if documents that satisfy the criteria exist
-			{
+			firstColl.find({ username: x, password: y }).toArray(function (err, docs) {
 
-				if (docs.length > 0) //if exists
-				{
+				if (docs.length > 0) {
+					req.session.username = x
 					un = docs[0].username;
 					pw = docs[0].password;
 					want = docs[0].wantlist;
-					getHome(res); // print out what it sends back
+					getHome(res);
 
 				}
-
+				else {
+					console.log(' ');
+				}
 			});
 
 
@@ -107,14 +124,14 @@ app.post('/bali', function (req, res) {
 		if (err) throw err;
 		var db = client.db('myDB');
 		var firstColl = db.collection('myCollection');
-		firstColl.find({ username: un, password: pw }).toArray(function (err, docs) //find if documents that satisfy the criteria exist
+		firstColl.find({ username: req.session.username }).toArray(function (err, docs) //find if documents that satisfy the criteria exist
 		{
 
 			if (docs.length > 0) //if exists
 			{
 				firstColl.updateOne(
 					{
-						username: un
+						username: req.session.username
 					},
 					{
 						$addToSet: { wantlist: 'bali' }
@@ -138,14 +155,14 @@ app.post('/santorini', function (req, res) {
 		if (err) throw err;
 		var db = client.db('myDB');
 		var firstColl = db.collection('myCollection');
-		firstColl.find({ username: un, password: pw }).toArray(function (err, docs) //find if documents that satisfy the criteria exist
+		firstColl.find({ username: req.session.username }).toArray(function (err, docs) //find if documents that satisfy the criteria exist
 		{
 
 			if (docs.length > 0) //if exists
 			{
 				firstColl.updateOne(
 					{
-						username: un
+						username: req.session.username
 					},
 					{
 						$addToSet: { wantlist: 'Santorini' }
@@ -165,13 +182,13 @@ app.post('/inca', function (req, res) {
 		if (err) throw err;
 		var db = client.db('myDB');
 		var firstColl = db.collection('myCollection');
-		firstColl.find({ username: un, password: pw }).toArray(function (err, docs) //find if documents that satisfy the criteria exist
+		firstColl.find({ username: req.session.username }).toArray(function (err, docs) //find if documents that satisfy the criteria exist
 		{
 			if (docs.length > 0) //if exists
 			{
 				firstColl.updateOne(
 					{
-						username: un
+						username: req.session.username
 					},
 					{
 						$addToSet: { wantlist: 'Inca' }
@@ -192,13 +209,13 @@ app.post('/paris', function (req, res) {
 		if (err) throw err;
 		var db = client.db('myDB');
 		var firstColl = db.collection('myCollection');
-		firstColl.find({ username: un, password: pw }).toArray(function (err, docs) //find if documents that satisfy the criteria exist
+		firstColl.find({ username: req.session.username }).toArray(function (err, docs) //find if documents that satisfy the criteria exist
 		{
 			if (docs.length > 0) //if exists
 			{
 				firstColl.updateOne(
 					{
-						username: un
+						username: req.session.username
 					},
 					{
 						$addToSet: { wantlist: 'Paris' }
@@ -219,14 +236,14 @@ app.post('/rome', function (req, res) {
 		if (err) throw err;
 		var db = client.db('myDB');
 		var firstColl = db.collection('myCollection');
-		firstColl.find({ username: un, password: pw }).toArray(function (err, docs) //find if documents that satisfy the criteria exist
+		firstColl.find({ username: req.session.username }).toArray(function (err, docs) //find if documents that satisfy the criteria exist
 		{
 
 			if (docs.length > 0) //if exists
 			{
 				firstColl.updateOne(
 					{
-						username: un
+						username: req.session.username
 					},
 					{
 						$addToSet: { wantlist: 'Rome' }
@@ -247,12 +264,18 @@ app.post('/annapurna', function (req, res) {
 		if (err) throw err;
 		var db = client.db('myDB');
 		var firstColl = db.collection('myCollection');
-		firstColl.find({ username: un, password: pw }).toArray(function (err, docs) //find if documents that satisfy the criteria exist
+		firstColl.find({ username: req.session.username }).toArray(function (err, docs) //find if documents that satisfy the criteria exist
 		{
 
 			if (docs.length > 0) //if exists
 			{
-				docs[0].wantlist.push('annapurna')
+				firstColl.updateOne(
+					{
+						username: req.session.username
+					},
+					{
+						$addToSet: { wantlist: 'annapurna' }
+					});
 
 			}
 
@@ -271,20 +294,20 @@ app.post('/register', function (req, res) {
 		if (err) throw err;
 		var db = client.db('myDB');
 		var firstColl = db.collection('myCollection');
-		firstColl.find({ username: u, password: c }).toArray(function (err, docs) //find if documents that satisfy the criteria exist
+		firstColl.find({ username: u }).toArray(function (err, docs) //find if documents that satisfy the criteria exist
 		{
 			if (docs.length > 0) //if exists
 			{
-				console.log("no")
+				console.log(' '); // print out what it sends back
 			}
 			else // if it does not 
 			{
+				console.log('hi')
 				firstColl.insertOne({ username: u, password: c, wantlist: [String] });
-				un = u;
-				pw = c;
-				want = [];
+				db.collection('sessions').insertOne({ username: u })
 
-				res.render('login');
+				want = [];
+				getlog(res)
 			}
 		});
 
@@ -300,8 +323,8 @@ MongoClient.connect("mongodb://127.0.0.1:27017", function (err, client) {
 });
 
 
-//app.listen(PORT, () => {
-//	console.log(`server started on port ${PORT}`);
-//});
+app.listen(PORT, () => {
+	console.log(`server started on port ${PORT}`);
+});
 
 
