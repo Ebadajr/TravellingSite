@@ -779,13 +779,6 @@
     "mime-types" "~2.1.34"
     "negotiator" "0.6.3"
 
-"alert@^5.1.1":
-  "integrity" "sha512-BZAkmtsWKZ8tqvHuVSPkHWxNOC9xYmoXrM+q+in9l+suC/jSOxikdQnjWzYo7Mqo57azr+q65f6hQ79mpBdzlg=="
-  "resolved" "https://registry.npmjs.org/alert/-/alert-5.1.3.tgz"
-  "version" "5.1.3"
-  dependencies:
-    "is-program-installed" "2.3.4"
-
 "anymatch@~3.1.2":
   "integrity" "sha512-KMReFUr0B4t+D+OBkjR3KYqvocp2XaSzO55UcB6mgQMd3KbcE+mWTyvVV7D/zsdEbNnV6acZUutkiHQXvTr1Rw=="
   "resolved" "https://registry.npmjs.org/anymatch/-/anymatch-3.1.3.tgz"
@@ -1177,11 +1170,6 @@
   "integrity" "sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng=="
   "resolved" "https://registry.npmjs.org/is-number/-/is-number-7.0.0.tgz"
   "version" "7.0.0"
-
-"is-program-installed@2.3.4":
-  "integrity" "sha512-b4e65BxUsiLkoFSOu8RAca7Rz7rPvnbw0u0lS431BFyI37C4lM6F+OjQ5DNODMakjKfcoOY9aeaPqXgFoezhsg=="
-  "resolved" "https://registry.npmjs.org/is-program-installed/-/is-program-installed-2.3.4.tgz"
-  "version" "2.3.4"
 
 "kareem@2.5.0":
   "integrity" "sha512-rVBUGGwvqg130iwYu8k7lutHuDBFj1yGRdnlE44wEhxAmFBad1zcL66PdWC1raw3tIObY6XWhtv3VL04xQb/cg=="
