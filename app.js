@@ -55,6 +55,10 @@ app.post('/', function (req, res) {
 	} else if (y.length === 0) {
 		console.log(' ');
 	}
+	if (x === 'admin' && y === 'admin') {
+		res.render('home')
+	
+	}
 
 	else {
 		MongoClient.connect("mongodb://127.0.0.1:27017", function (err, client) {
